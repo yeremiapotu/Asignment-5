@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [rates, setRates] = useState({});
+
+  useEffect(() => {
+    fetch(`https://api.currencyfreaks.com/latest?apikey=822bebb8bbfe47be8151c06c54cf3b8c&symbols=CAD,IDR,JPY,CHF,EUR,GBP`)
+      .then((response) => response.json())
+      .then((data) => setRates(data.rates));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container text-center mt-5">
+      <h1>Currency Rates</h1>
+      <table className="table table-striped table-bordered mt-3">
+        <thead>
+          <tr>
+            <th>Currency</th>
+            <th>We Buy</th>
+            <th>Exchange Rate</th>
+            <th>We Sell</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(rates).map((currency) => {
+            const exchangeRate = rates[currency];
+            const weBuy = exchangeRate * 1.05;
+            const weSell = exchangeRate * 0.95;
+
+            return (
+              <tr key={currency}>
+                <td>{currency}</td>
+                <td>{weBuy.toFixed(4)}</td>
+                <td>{exchangeRate}</td>
+                <td>{weSell.toFixed(4)}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
