@@ -4,11 +4,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   const [rates, setRates] = useState({});
 
+  const API_URL = process.env.REACT_APP_API_URL;
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const currency = process.env.REACT_APP_CURRENCY;
+
   useEffect(() => {
-    fetch(`https://api.currencyfreaks.com/latest?apikey=822bebb8bbfe47be8151c06c54cf3b8c&symbols=CAD,IDR,JPY,CHF,EUR,GBP`)
+    const url = `${API_URL}apikey=${API_KEY}&symbols=${currency}`;
+
+    fetch(url)
       .then((response) => response.json())
-      .then((data) => setRates(data.rates));
-  }, []);
+      .then((data) => {
+        setRates(data.rates);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [API_URL, API_KEY, currency]);
 
   return (
     <div className="container text-center mt-5">
