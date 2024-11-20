@@ -6,10 +6,10 @@ function App() {
 
   const API_URL = process.env.REACT_APP_API_URL;
   const API_KEY = process.env.REACT_APP_API_KEY;
-  const currency = process.env.REACT_APP_CURRENCY;
+  const API_CRNCY = process.env.REACT_APP_CURRENCY;
 
   useEffect(() => {
-    const url = `${API_URL}apikey=${API_KEY}&symbols=${currency}`;
+    const url = `${API_URL}apikey=${API_KEY}&symbols=${API_CRNCY}`;
 
     fetch(url)
       .then((response) => response.json())
@@ -19,7 +19,7 @@ function App() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [API_URL, API_KEY, currency]);
+  }, [API_URL, API_KEY, API_CRNCY]);
 
   return (
     <div className="container text-center mt-5">
